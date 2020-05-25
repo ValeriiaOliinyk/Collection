@@ -13,41 +13,42 @@ const refs = {
 refs.input.addEventListener('change', onChange);
 
 const savedTheme = localStorage.getItem('theme');
-const parsedTheme = JSON.parse(savedTheme);
 
-if (parsedTheme === Theme.DARK) {
+if (savedTheme === Theme.LIGHT) {
+  addClass(Theme.LIGHT);
+}
+
+if (savedTheme === Theme.DARK) {
   refs.input.setAttribute('checked', true);
-  addClass('dark-theme');
+  addClass(Theme.DARK);
 }
 
 function onChange(event) {
   if (event.target.checked) {
-    removeClass('light-theme');
-    addClass('dark-theme');
+    changeTheme(Theme.LIGHT, Theme.DARK);
     removeTheme(Theme.LIGHT);
     addTheme(Theme.DARK);
   }
 
   if (!event.target.checked) {
-    removeClass('dark-theme');
-    addClass('light-theme');
+    changeTheme(Theme.DARK, Theme.LIGHT);
     removeTheme(Theme.DARK);
     addTheme(Theme.LIGHT);
   }
 }
 
-function addClass(value) {
-  refs.body.classList.add(value);
+function changeTheme(oldClass, newClass) {
+  refs.body.classList.replace(oldClass, newClass);
 }
 
-function removeClass(value) {
-  refs.body.classList.remove(value);
+function addClass(newClass) {
+  refs.body.classList.add(newClass);
 }
 
 function addTheme(value) {
-  localStorage.setItem('theme', JSON.stringify(value));
+  localStorage.setItem('theme', value);
 }
 
 function removeTheme(value) {
-  localStorage.removeItem('theme', JSON.stringify(value));
+  localStorage.removeItem('theme', value);
 }
